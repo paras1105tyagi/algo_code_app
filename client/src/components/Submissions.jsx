@@ -2,23 +2,28 @@ import CodeBlock from "./CodeBlock";
 import PropTypes from 'prop-types';
 
 const Submissions = ({ data }) => {
-    if (!data || data.submissions_list.length === 0)
+    if (!data || !data.submissions_list || data.submissions_list.length === 0) {
         return (
             <div className="text-[14px] text-text_2 mx-auto text-center mt-[50px]">
                 No submissions found
             </div>
         );
-    const status = data.submissions_list[0].status;
-    const error = data.submissions_list[0].error;
-    const runtime = data.submissions_list[0].runtime;
-    const memory = data.submissions_list[0].memory;
-    const input = data.submissions_list[0].input;
-    const expected_output = data.submissions_list[0].expected_output;
-    const user_output = data.submissions_list[0].user_output;
+    }
+
+    const latestSubmission = data.submissions_list[0];
+    const {
+        status,
+        error,
+        runtime,
+        memory,
+        input,
+        expected_output,
+        user_output
+    } = latestSubmission;
 
     return (
         <div>
-            {data.is_submitted ? (
+            {data.is_submitted && (
                 <>
                     <div
                         className={`ml-[26px] mt-[36px] font-bold text-[22px] ${
@@ -48,11 +53,9 @@ const Submissions = ({ data }) => {
                                 }}
                             ></i>
                         )}
-                        {status == undefined
-                            ? "Runtime Error"
-                            : status}
+                        {status || "Runtime Error"}
                     </div>
-                    {error && status !== "Accepted" ? (
+                    {error && status !== "Accepted" && (
                         <>
                             <div className="text-[14px] text-text_2 ml-[26px] mt-[20px] mb-[10px]">
                                 Error Message:
@@ -63,8 +66,6 @@ const Submissions = ({ data }) => {
                                 </code>
                             </div>
                         </>
-                    ) : (
-                        <></>
                     )}
                     {status === "Accepted" && (
                         <>
@@ -96,70 +97,68 @@ const Submissions = ({ data }) => {
                             <CodeBlock
                                 status={status}
                                 input={input || ""}
-                            ></CodeBlock>
+                            />
                             <div className="text-[14px] text-text_2 ml-[26px] my-[10px]">
                                 Expected Output:
                             </div>
                             <CodeBlock
                                 status={status}
                                 input={expected_output || ""}
-                            ></CodeBlock>
+                            />
                             <div className="text-[14px] text-text_2 ml-[26px] my-[10px]">
                                 Your Output:
                             </div>
                             <CodeBlock
                                 status={status}
                                 input={user_output || ""}
-                            ></CodeBlock>
+                            />
                         </div>
                     )}
                 </>
-            ) : (
-                <></>
             )}
-            {data.submissions_list != undefined &&
-                data.submissions_list.length !== 0 && (
-                    <>
-                        <div className="flex flex-row text-[14px] text-text_2 items-center py-[10px] w-[calc(100%-52px)] ml-[26px]">
-                            <div className="w-[196px]">Status</div>
-                            <div className="w-[100px]">Language</div>
-                            <div className="w-[80px]">Runtime</div>
-                            <div className="w-[80px]">Memory</div>
-                            <div className="w-[120px]">Date</div>
-                        </div>
-                    </>
-                )}
-            {data.submissions_list != undefined &&
-                data.submissions_list.length !== 0 &&
-                data.submissions_list.map((elem) => (
-                    <div className="flex flex-row mb-[8px] text-[14px] px-[16px] py-[10px] ml-[26px] w-[calc(100%-52px)] bg-[#252525] rounded-[4px] overflow-hidden whitespace-nowrap">
-                        <div
-                            className={`font-bold w-[180px] ${
-                                elem.status === "Accepted"
-                                    ? "text-green-500"
-                                    : "text-red-600"
-                            }`}
-                        >
-                            {elem.status}
-                        </div>
-                        <div className="w-[100px]">{elem.language}</div>
-                        <div className="w-[80px]">
-                            {Math.round(elem.runtime)}
-                            {"ms"}
-                        </div>
-                        <div className="w-[80px]">
-                            {Math.round(elem.memory)}
-                            {"MB"}
-                        </div>
-                        <div className="w-[120px]">
-                            {new Date(elem.time).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                            })}
-                        </div>
+            {data.submissions_list.length > 0 && (
+                <>
+                    <div className="flex flex-row text-[14px] text-text_2 items-center py-[10px] w-[calc(100%-52px)] ml-[26px]">
+                        <div className="w-[196px]">Status</div>
+                        <div className="w-[100px]">Language</div>
+                        <div className="w-[80px]">Runtime</div>
+                        <div className="w-[80px]">Memory</div>
+                        <div className="w-[120px]">Date</div>
                     </div>
-                ))}
+                    {data.submissions_list.map((submission, index) => (
+                        <div 
+                            key={index}
+                            className="flex flex-row mb-[8px] text-[14px] px-[16px] py-[10px] ml-[26px] w-[calc(100%-52px)] bg-[#252525] rounded-[4px] overflow-hidden whitespace-nowrap"
+                        >
+                            <div
+                                className={`font-bold w-[180px] ${
+                                    submission.status === "Accepted"
+                                        ? "text-green-500"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                {submission.status}
+                            </div>
+                            <div className="w-[100px]">{submission.language}</div>
+                            <div className="w-[80px]">
+                                {Math.round(submission.runtime)}
+                                {"ms"}
+                            </div>
+                            <div className="w-[80px]">
+                                {Math.round(submission.memory)}
+                                {"MB"}
+                            </div>
+                            <div className="w-[120px]">
+                                {new Date(submission.time).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </>
+            )}
         </div>
     );
 };

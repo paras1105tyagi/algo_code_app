@@ -23,7 +23,15 @@ const problemSchema = new mongoose.Schema({
     },
     test: Array,
     function_name: String,
+    title: {
+        type: String,
+        unique: true,
+        required: true
+    }
 });
+
+// Create a compound index on main.id and title
+problemSchema.index({ 'main.id': 1, title: 1 }, { unique: true });
 
 const ProblemModel = mongoose.model("Problem", problemSchema);
 

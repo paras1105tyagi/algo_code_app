@@ -101,12 +101,9 @@ const ProblemDescription = ({ data }) => {
                             }`}
                             onClick={() => setIsStarred(!isStarred)}
                         >
-                            <StarIcon
-                                data={{
-                                    is_filled: isStarred,
-                                    width: "22px",
-                                    height: "22px",
-                                }}
+                            <StarIcon 
+                                isStarred={isStarred}
+                                onClick={() => setIsStarred(!isStarred)}
                             />
                         </div>
                     </div>

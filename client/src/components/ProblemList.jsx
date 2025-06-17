@@ -37,7 +37,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
         const { difficulty } = SortOptions;
         const newOptions = {
             difficulty:
-                difficulty === "" ? "asc" : difficulty === "asc" ? "des" : "",
+                difficulty === "" ? "asc" : difficulty === "asc" ? "desc" : "",
             title: SortOptions.title,
             acceptance_rate_count: SortOptions.acceptance_rate_count,
         };
@@ -54,7 +54,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
                 acceptance_rate_count === ""
                     ? "asc"
                     : acceptance_rate_count === "asc"
-                    ? "des"
+                    ? "desc"
                     : "",
             title: SortOptions.title,
             difficulty: SortOptions.difficulty,
@@ -68,7 +68,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
         setIsSortLoading(true);
         const { title } = SortOptions;
         const newOptions = {
-            title: title === "" ? "asc" : title === "asc" ? "des" : "",
+            title: title === "" ? "asc" : title === "asc" ? "desc" : "",
             acceptance_rate_count: SortOptions.acceptance_rate_count,
             difficulty: SortOptions.difficulty,
         };
@@ -100,7 +100,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
                             color:
                                 SortOptions.title === "asc"
                                     ? "rgb(34, 197, 94)"
-                                    : SortOptions.title === "des"
+                                    : SortOptions.title === "desc"
                                     ? "rgb(220, 38, 38)"
                                     : "",
                         }}
@@ -117,8 +117,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
                             color:
                                 SortOptions.acceptance_rate_count === "asc"
                                     ? "rgb(34, 197, 94)"
-                                    : SortOptions.acceptance_rate_count ===
-                                      "des"
+                                    : SortOptions.acceptance_rate_count === "desc"
                                     ? "rgb(220, 38, 38)"
                                     : "",
                         }}
@@ -135,7 +134,7 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
                             color:
                                 SortOptions.difficulty === "asc"
                                     ? "rgb(34, 197, 94)"
-                                    : SortOptions.difficulty === "des"
+                                    : SortOptions.difficulty === "desc"
                                     ? "rgb(220, 38, 38)"
                                     : "",
                         }}
@@ -318,33 +317,10 @@ const ProblemList = ({ data, searchFn, searchQuery }) => {
                                     <div
                                         style={{
                                             width: starWidth,
-                                            height: "40px",
-                                            lineHeight: "40px",
                                         }}
+                                        className="h-full flex items-center px-[20px]"
                                     >
-                                        <div className="ml-[20px] relative h-full">
-                                            {main.is_starred ? (
-                                                <div className="absolute top-1/2 -translate-y-1/2 left-0">
-                                                    <StarIcon
-                                                        data={{
-                                                            is_filled: true,
-                                                            width: "14px",
-                                                            height: "14px",
-                                                        }}
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="absolute top-1/2 -translate-y-1/2 left-0">
-                                                    <StarIcon
-                                                        data={{
-                                                            is_filled: false,
-                                                            width: "14px",
-                                                            height: "14px",
-                                                        }}
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
+                                        <StarIcon isStarred={false} onClick={() => {}} />
                                     </div>
                                 </Link>
                             </div>

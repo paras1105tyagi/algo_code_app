@@ -34,25 +34,17 @@ const LandingPage = ({ token, id }) => {
     }, []);
     return (
         <div className="text-[14px] overflow-hidden h-screen">
-            {verifiedCertain && verified ? (
+            {verifiedCertain ? (
                 <MainHeading
                     data={{
                         username: username,
-                        status: "loggedin",
-                    }}
-                />
-            ) : verifiedCertain === true && verified === false ? (
-                <MainHeading
-                    data={{
-                        status: "not-loggedin",
+                        status: verified ? "loggedin" : "not-loggedin",
                     }}
                 />
             ) : (
-                <MainHeading
-                    data={{
-                        status: "none",
-                    }}
-                />
+                <div className="fixed w-full h-[60px] bg-black border-b border-borders flex felx-row z-[100]">
+                    <div className="h-[60px]"></div>
+                </div>
             )}
             <div className="w-[100vw] overflow-hidden h-[calc(100vh-60px)] absolute">
                 <div className="circle-1-animation absolute top-[6%] left-[55%] -translate-x-1/2 w-[500px] h-[500px] rounded-full filter blur-[99px] bg-gradient-to-br from-transparent to-red-800 opacity-60 z-10"></div>

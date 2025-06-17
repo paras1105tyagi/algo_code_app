@@ -12,32 +12,59 @@ function handleTests(testCases, func) {
     let date = new Date();
     let runtime;
     let t1;
-    for (let i = 0; i < testCases.length; i++) {
-            let out;
-            try {
-                    const input = testCases[i].slice(0, testCases[i].length - 1);
-                    const exOutput = testCases[i][testCases[i].length - 1];
-                    t1 = performance.now();
-                    out = func(...input);
-                    if (!equality(out, exOutput)) {
-                            problemInput = JSON.stringify(input);
-                            testCase = testCases[i];
-                            expectedOut = JSON.stringify(exOutput);
-                            yourOut = JSON.stringify(out);
-                            testCaseNumber = i;
-                            status = "Wrong Answer";
-
-                            ERR = \`Wrong answer; Test Case Number: \${i}; Input: \${JSON.stringify(input)}; Expected Output: \${exOutput}; Your Output: \${out};\`;
-                    }
-            } catch (e) {
-                    ERR = e;
-                    status = "Runtime Error";
-            }
+    
+    // Validate test cases
+    if (!Array.isArray(testCases)) {
+        throw new Error('Test cases must be an array');
     }
-    runtime = performance.now() - t1;
+
+    if (testCases.length === 0) {
+        throw new Error('No test cases provided');
+    }
+
+    for (let i = 0; i < testCases.length; i++) {
+        let out;
+        try {
+            // Validate each test case
+            if (!Array.isArray(testCases[i])) {
+                throw new Error('Test case ' + i + ' must be an array');
+            }
+
+            if (testCases[i].length !== 3) {
+                throw new Error('Test case ' + i + ' must have exactly 3 elements (array, target, expected_output)');
+            }
+
+            // For Two Sum problem, we expect:
+            // testCases[i] = [array, target, expected_output]
+            const nums = testCases[i][0];  // First element is the array
+            const target = testCases[i][1];  // Second element is the target
+            const exOutput = testCases[i][2];  // Third element is expected output
+            
+            t1 = performance.now();
+            out = func(nums, target);  // Call function with array and target
+            runtime = performance.now() - t1;
+
+            if (!equality(out, exOutput)) {
+                problemInput = JSON.stringify([nums, target]);
+                testCase = testCases[i];
+                expectedOut = JSON.stringify(exOutput);
+                yourOut = JSON.stringify(out);
+                testCaseNumber = i;
+                status = "Wrong Answer";
+                ERR = 'Wrong answer; Test Case Number: ' + i + 
+                      '; Input: ' + JSON.stringify([nums, target]) + 
+                      '; Expected Output: ' + JSON.stringify(exOutput) + 
+                      '; Your Output: ' + JSON.stringify(out) + ';';
+            }
+        } catch (e) {
+            ERR = e.toString();
+            status = "Runtime Error";
+            runtime = 0;
+        }
+    }
 
     if (ERR == undefined && testCase == undefined) status = "Accepted";
-    return \`{ "status":"\${status}",\n"date":"\${date}",\n"runtime": "\${runtime}",\n"error_message": "\${ERR}",\n"test_case_number" :"\${testCaseNumber}",\n"test_case":"\${testCase}",\n"input": "\${problemInput}",\n"expected_output":"\${expectedOut}",\n"user_output":"\${yourOut}"\n}\`;
+    return \`{ "status":"\${status}",\n"date":"\${date}",\n"runtime": \${runtime || 0},\n"error_message": "\${ERR || ''}",\n"test_case_number" :"\${testCaseNumber || 'undefined'}",\n"test_case":"\${testCase || 'undefined'}",\n"input": "\${problemInput || 'undefined'}",\n"expected_output":"\${expectedOut || 'undefined'}",\n"user_output":"\${yourOut || 'undefined'}"\n}\`;
 }
 
 function equality(item1, item2) {
@@ -45,14 +72,14 @@ function equality(item1, item2) {
     const isArrayItem2 = Array.isArray(item2);
     if (isArrayItem1 !== isArrayItem2) return false;
     if (isArrayItem1) {
-            if (item1.length !== item2.length) return false;
-            for (let i = 0; i < item1.length; i++) {
-                    const indexof = item2.indexOf(item1[i]);
-                    if (indexof === -1) return false;
-                    item2.splice(indexof, 1);
-            }
-            if (item2.length !== 0) return false;
-            else return true;
+        if (item1.length !== item2.length) return false;
+        for (let i = 0; i < item1.length; i++) {
+            const indexof = item2.indexOf(item1[i]);
+            if (indexof === -1) return false;
+            item2.splice(indexof, 1);
+        }
+        if (item2.length !== 0) return false;
+        else return true;
     }
     return item1 === item2;
 }`;
@@ -78,23 +105,30 @@ function writeTestFile(codeBody, testCases, functionName) {
                 stderr: "",
                 code_body: codeBody,
             });
-            resolve({
+        });
+    }
+
+    // Validate test cases before creating the test file
+    if (!Array.isArray(testCases)) {
+        return new Promise((resolve, reject) => {
+            reject({
                 stdout: {
                     status: "Runtime Error",
                     date: new Date(),
                     runtime: 0,
-                    error_message: e,
+                    error_message: "Invalid test cases format: test cases must be an array",
                     test_case_number: undefined,
                     test_case: undefined,
                     expected_output: undefined,
                     user_output: undefined,
                 },
-                stdout_string: e,
+                stdout_string: "Invalid test cases format",
                 stderr: "",
                 code_body: codeBody,
             });
         });
     }
+
     let data =
         "(function x() { try {" +
         codeBody +
@@ -131,8 +165,17 @@ function writeTestFile(codeBody, testCases, functionName) {
             });
         } catch (error) {
             return reject({
-                stdout: error,
-                stdout_string: "",
+                stdout: {
+                    status: "Runtime Error",
+                    date: new Date(),
+                    runtime: 0,
+                    error_message: error.toString(),
+                    test_case_number: undefined,
+                    test_case: undefined,
+                    expected_output: undefined,
+                    user_output: undefined,
+                },
+                stdout_string: error.toString(),
                 stderr: "",
                 code_body: codeBody,
             });
