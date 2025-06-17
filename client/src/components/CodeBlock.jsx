@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function CodeBlock({ input, status }) {
     const [showCopyButton, setShowCopyButton] = useState(false);
@@ -15,7 +15,7 @@ function CodeBlock({ input, status }) {
 
     function handleCopyClick() {
         if (!input) return;
-        
+
         navigator.clipboard.writeText(input);
         setCopyText("Copied");
 
@@ -24,23 +24,21 @@ function CodeBlock({ input, status }) {
         }, 2000);
     }
 
-    if (!input) {
-        return null;
-    }
+    if (!input) return null;
 
     return (
-        <div 
-            className="relative"
-            onMouseEnter={handleMouseEnter} 
+        <div
+            className="relative w-full"
+            onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             {status !== "Accepted" && (
-                <pre className="ml-[26px] submission-code-block relative">
+                <pre className="bg-[#1a1a1a] text-yellow-100 font-mono text-[14px] p-4 pl-6 pr-12 rounded-md border border-yellow-600 relative whitespace-pre-wrap break-words">
                     <code>{input}</code>
                     {showCopyButton && (
-                        <button 
-                            onClick={handleCopyClick} 
-                            className="text-[14px] text-text_2 border border-borders rounded absolute top-2 right-2 px-2 hover:text-white hover:border-text_2 code-font transition-colors"
+                        <button
+                            onClick={handleCopyClick}
+                            className="absolute top-3 right-3 text-sm font-semibold px-3 py-1 rounded-md border border-yellow-400 bg-yellow-300 text-black hover:bg-yellow-400 transition-colors"
                         >
                             {copyText}
                         </button>
@@ -53,7 +51,7 @@ function CodeBlock({ input, status }) {
 
 CodeBlock.propTypes = {
     input: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired
+    status: PropTypes.string.isRequired,
 };
 
-export default CodeBlock; 
+export default CodeBlock;

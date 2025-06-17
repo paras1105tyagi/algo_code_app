@@ -42,6 +42,7 @@ const SignupPage = ({ Data }) => {
             console.error("Sign-up failed:", error);
         }
     };
+
     return (
         <>
             <Link to={"/"}>
@@ -49,60 +50,61 @@ const SignupPage = ({ Data }) => {
                     id="logo-cont"
                     className="inline-block relative text-[24px] left-1/2 -translate-x-1/2 font-bold italic mx-auto mt-[12px]"
                 >
-                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 px-[1px]">
-                        Fire
+                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500 px-[1px]">
+                        Algo_
                     </span>
-                    <span>Code</span>
+                    <span className="text-white">Code</span>
                 </div>
             </Link>
+
             <div className="min-h-fit w-[300px] mx-auto text-[14px]">
-                <div className="relative bg-black shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <h2 className="text-[34px] font-bold mb-[30px] text-center mt-[60px]">
+                <div className="relative bg-[#0b1120] shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                    <h2 className="text-[34px] font-bold mb-[30px] text-center mt-[60px] text-white">
                         Sign Up
                     </h2>
                     <div className="mb-4">
                         <input
-                            className="appearance-none border w-full py-2 px-3 placeholder:text-text_2 focus:placeholder:text-orange-500 bg-black rounded border-borders leading-tight focus:outline-none focus:border-orange-500"
+                            className="appearance-none border w-full py-2 px-3 placeholder:text-gray-400 focus:placeholder:text-indigo-300 bg-[#0b1120] text-white rounded border-indigo-700 leading-tight focus:outline-none focus:border-indigo-400"
                             type="text"
                             placeholder="Username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            required={true}
+                            required
                         />
                     </div>
                     <div className="mb-4">
                         <input
-                            className="appearance-none border w-full py-2 px-3 placeholder:text-text_2 focus:placeholder:text-orange-500 bg-black rounded border-borders leading-tight focus:outline-none focus:border-orange-500"
+                            className="appearance-none border w-full py-2 px-3 placeholder:text-gray-400 focus:placeholder:text-indigo-300 bg-[#0b1120] text-white rounded border-indigo-700 leading-tight focus:outline-none focus:border-indigo-400"
                             type="email"
                             placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required={true}
+                            required
                         />
                     </div>
                     <div className="mb-4">
                         <input
-                            className="appearance-none border w-full py-2 px-3 placeholder:text-text_2 focus:placeholder:text-orange-500 bg-black rounded border-borders leading-tight focus:outline-none focus:border-orange-500"
+                            className="appearance-none border w-full py-2 px-3 placeholder:text-gray-400 focus:placeholder:text-indigo-300 bg-[#0b1120] text-white rounded border-indigo-700 leading-tight focus:outline-none focus:border-indigo-400"
                             type="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required={true}
+                            required
                         />
                     </div>
                     <div className="mb-6">
                         <input
-                            className="appearance-none border w-full py-2 px-3 placeholder:text-text_2 focus:placeholder:text-orange-500 bg-black rounded border-borders leading-tight focus:outline-none focus:border-orange-500"
+                            className="appearance-none border w-full py-2 px-3 placeholder:text-gray-400 focus:placeholder:text-indigo-300 bg-[#0b1120] text-white rounded border-indigo-700 leading-tight focus:outline-none focus:border-indigo-400"
                             type="password"
                             placeholder="Confirm Password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            required={true}
+                            required
                         />
                     </div>
                     <div className="flex items-center justify-between">
                         <button
-                            className="bg-orange-500 hover:bg-red-600 text-black font-bold py-[6px] px-4 rounded focus:outline-none focus:shadow-outline w-full transition"
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-[6px] px-4 rounded focus:outline-none focus:shadow-outline w-full transition"
                             type="button"
                             onClick={handleSignUp}
                         >
@@ -118,17 +120,17 @@ const SignupPage = ({ Data }) => {
                         </button>
                     </div>
                     <div className="flex items-center justify-between mt-[20px]">
-                        <span className="text-text_2">
+                        <span className="text-gray-400">
                             Already have an account?{" "}
                         </span>
                         <Link
                             to="/login"
-                            className="text-orange-500 hover:text-red-600"
+                            className="text-indigo-400 hover:text-blue-400"
                         >
                             Login
                         </Link>
                     </div>
-                    <div className="text-center mt-[20px] text-red-600 w-full overflow-hidden">
+                    <div className="text-center mt-[20px] text-red-500 w-full overflow-hidden">
                         {message}
                     </div>
                 </div>

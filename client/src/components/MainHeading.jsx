@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import Tooltip from "./Tooltip";
 import SidePanel from "./SidePanel";
 import Notification from "./Notification";
@@ -11,84 +11,82 @@ const MainHeading = ({ data }) => {
 
     return (
         <>
-            <div className="fixed w-full h-[60px] bg-black border-b border-borders flex felx-row z-[100]">
-                <Link to="/" className=" select-none">
-                    <div
-                        id="logo-cont"
-                        className="inline-block text-[24px] font-bold italic mx-[36px] mt-[12px]"
-                    >
-                        <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 px-[1px]">
-                            Fire
-                        </span>
-                        <span>Code</span>
-                    </div>
+            <div className="fixed w-full h-[60px] bg-gradient-to-r from-yellow-400 to-yellow-500 border-b border-yellow-600 flex items-center justify-between px-6 z-[100]">
+                {/* Logo */}
+                <Link to="/" className="text-[24px] font-bold italic select-none">
+                    <span className="text-white">Algo</span>
+                    <span className="text-black">_Code</span>
                 </Link>
-                {data != undefined &&
-                    "items" in data &&
-                    data.items != undefined &&
-                    data.items.length !== 0 &&
-                    data.items.map((elem) => (
+
+                {/* Navigation Items */}
+                <div className="hidden md:flex space-x-6">
+                    {data?.items?.map((elem) => (
                         <Link
                             key={elem.text}
                             to={elem.link_path}
-                            className="mt-[15px] hidden md:inline-block text-[14px] h-fit p-[5px] text-[#808080] hover:text-white transition"
+                            className="text-black font-medium hover:text-white transition"
                         >
-                            <div id={elem.text}>{elem.text}</div>
+                            {elem.text}
                         </Link>
                     ))}
-                {data?.status === "loggedin" || data?.status == undefined ? (
-                    <div className="fixed flex flex-row right-[36px] items-center h-[60px]">
-                        <div className="inline-block p-[5px] text-[14px] text-[#808080] md:hidden">
-                            <div className="group w-[32px] h-[32px] border border-borders rounded-[99px] relative hover:bg-[#222] cursor-pointer">
-                                <i className="bi bi-three-dots-vertical absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:text-white"></i>
-                            </div>
-                        </div>
+                </div>
 
-                        <div
-                            id="notification"
-                            className="inline-block p-[5px] text-[14px] text-[#808080] "
-                        >
+                {/* Right side */}
+                <div className="flex items-center space-x-4">
+                    {/* Mobile menu icon */}
+                    <div className="md:hidden">
+                        <div className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-yellow-300 text-black cursor-pointer border border-yellow-600">
+                            <i className="bi bi-list"></i>
+                        </div>
+                    </div>
+
+                    {/* Notification */}
+                    {(data?.status === "loggedin" || data?.status === undefined) && (
+                        <div className="relative">
                             <Notification
                                 display={notifDisplayState}
                                 displayFn={setNotifDisplayState}
                             />
                         </div>
-                        <div
-                            id="profile-picture"
-                            className="inline-block relative p-[5px] text-[14px] text-[#808080] "
-                            onClick={() => setSidePanelState(!sidePanelState)}
-                        >
-                            <Tooltip text={data?.username || ""}>
-                                <div className="w-[32px] h-[32px] border border-borders rounded-[99px]"></div>
-                            </Tooltip>
-                        </div>
-                        <SidePanel
-                            displayFn={setSidePanelState}
-                            display={sidePanelState}
-                            data={{
-                                username: data?.username || "",
-                            }}
-                        />
-                    </div>
-                ) : data?.status === "not-loggedin" ? (
-                    <div className="fixed flex flex-row right-[36px] items-center h-[60px]">
-                        <Link
-                            to="/login"
-                            className="inline-block font-bold py-[6px] px-[16px] bg-black hover:bg-borders border rounded-md border-borders text-white text-[14px]"
-                        >
-                            Log In
-                        </Link>
-                        <Link
-                            to="/signup"
-                            className="ml-[8px] font-bold inline-block py-[6px] px-[16px] bg-gradient-to-r from-orange-500 to-red-600 border rounded-md border-borders text-black text-[14px] hover:bg-red-800"
-                        >
-                            Sign Up
-                        </Link>
-                    </div>
-                ) : (
-                    <></>
-                )}
+                    )}
+
+                    {/* Profile Picture or Auth Buttons */}
+                    {data?.status === "loggedin" || data?.status === undefined ? (
+                        <>
+                            <div
+                                className="w-8 h-8 rounded-full border border-yellow-600 cursor-pointer flex items-center justify-center bg-white"
+                                onClick={() => setSidePanelState(!sidePanelState)}
+                            >
+                                <Tooltip text={data?.username || ""}>
+                                    <div className="w-full h-full rounded-full bg-yellow-100"></div>
+                                </Tooltip>
+                            </div>
+                            <SidePanel
+                                displayFn={setSidePanelState}
+                                display={sidePanelState}
+                                data={{ username: data?.username || "" }}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                to="/login"
+                                className="bg-white text-yellow-700 font-bold px-4 py-1.5 rounded border border-yellow-600 hover:bg-yellow-300"
+                            >
+                                Log In
+                            </Link>
+                            <Link
+                                to="/signup"
+                                className="bg-black text-white font-bold px-4 py-1.5 rounded border border-black hover:bg-yellow-800"
+                            >
+                                Sign Up
+                            </Link>
+                        </>
+                    )}
+                </div>
             </div>
+
+            {/* Spacer */}
             <div className="h-[60px]"></div>
         </>
     );
@@ -96,15 +94,15 @@ const MainHeading = ({ data }) => {
 
 MainHeading.propTypes = {
     data: PropTypes.shape({
-        status: PropTypes.oneOf(['loggedin', 'not-loggedin']),
+        status: PropTypes.oneOf(["loggedin", "not-loggedin"]),
         username: PropTypes.string,
         items: PropTypes.arrayOf(
             PropTypes.shape({
                 text: PropTypes.string.isRequired,
-                link_path: PropTypes.string.isRequired
+                link_path: PropTypes.string.isRequired,
             })
-        )
-    })
+        ),
+    }),
 };
 
-export default MainHeading; 
+export default MainHeading;

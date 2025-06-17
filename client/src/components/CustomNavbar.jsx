@@ -72,6 +72,7 @@ const CustomNavbar = ({ data }) => {
                 <div
                     className={`h-[32px] absolute opacity-transition box-content rounded`}
                     id="hover-rect"
+                    
                     style={{
                         width: currentWidth,
                         transition: `transform ${

@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const seedProblems = require('./problems');
 
 // Hardcoded MongoDB URI
-const MONGODB_URI = 'mongodb+srv://parastyagi1105:DmUkrpcVXbqEb0Ww@cluster0.cfqu8w5.mongodb.net/?retryWrites=true&w=majority&';
-
+const MONGODB_URI = process.env.MONGODB_URI;
 const seed = async () => {
     try {
         await mongoose.connect(MONGODB_URI);
